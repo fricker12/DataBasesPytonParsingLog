@@ -1,0 +1,7 @@
+argparse
+pymysql
+psycopg2
+db-sqlite3
+h2
+pymongo
+redis
