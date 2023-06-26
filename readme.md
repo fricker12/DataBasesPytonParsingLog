@@ -11,8 +11,8 @@ You need the followin to be able to run this code:
 First install the script and it's requirements:
 
 ```
-git clone https://github.com/fricker12/ParsingAccessLog
-cd ParsingAccessLog
+git clone https://github.com/fricker12/DataBasesPytonParsingLog
+cd DataBasesPythonParsingLog
 
 ```
 Then run the script as follows:
