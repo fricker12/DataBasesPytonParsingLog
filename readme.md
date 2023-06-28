@@ -17,9 +17,8 @@ cd DataBasesPythonParsingLog
 ```
 Then run the script as follows:
 ```
-python db_class.py --database mysql --host localhost --port 3306 --username root --password 12345678 --db_name acces_log --log_file access_log
 
-python databases.py --host localhost --port 3306 --username root --password 12345678 --db-name access_log --log-file access_log mysql
+python run.py --database mysql --host localhost --port 3306 --username root --password 12345678 --db_name access_log --log_file access_log
 
 пример команды выполненя запроса к базе данных 
 
