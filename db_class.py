@@ -258,14 +258,10 @@ class LogAnalyzer:
     
     def get_upstream_requests(self, interval):
         query = """
-            SELECT DATE_FORMAT(`timestamp`, '%%Y-%%m-%%d %%H:%%i:%%s') AS timestamp,
-            COUNT(*) AS upstream_request_count
+            SELECT COUNT(*) AS upstream_request_count, AVG(time_taken) AS average_time
             FROM log_data
-            WHERE `timestamp` >= DATE_SUB(NOW(), INTERVAL %%s)
-                AND `timestamp` <= NOW()
+            WHERE `timestamp` >= NOW() - INTERVAL %s
                 AND `BALANCER_WORKER_NAME` IS NOT NULL
-            GROUP BY timestamp
-            ORDER BY timestamp
         """
         result = self.db_connector.execute_query(query, (interval,))
         return result
@@ -275,7 +271,7 @@ class LogAnalyzer:
             SELECT CONCAT(DATE_FORMAT(`timestamp`, '%%Y-%%m-%%d %%H:'), LPAD((MINUTE(`timestamp`) DIV %s) * %s, 2, '0')) AS period,
             COUNT(*) AS request_count
             FROM log_data
-            WHERE `timestamp` >= DATE_SUB(NOW(), INTERVAL %%s)
+            WHERE `timestamp` >= DATE_SUB(NOW(), INTERVAL %s)
             GROUP BY period
             ORDER BY request_count DESC
             LIMIT %s
@@ -351,8 +347,8 @@ def main():
     for stats in conversion_stats:
         print(f"{stats[0]}\t{stats[1]}")
 
-    upstream_requests = log_analyzer.get_upstream_requests(1440)
-    print("Timestamp\tUpstream Request Count")
+    upstream_requests = log_analyzer.get_upstream_requests('30 SECOND')
+    print("Upstream Request Count\tAverage Time")
     for request in upstream_requests:
         print(f"{request[0]}\t{request[1]}")
 
